@@ -5,9 +5,9 @@ class ConfederacaoEnum(models.TextChoices):
     UEFA = 'uefa', 'UEFA'
     CONMEBOL = 'conmebol', 'Conmebol'
     CONCACAF = 'concacaf', 'Concacaf'
-    AFC = 'afc', 'Afc'
-    CAF = 'caf', 'Caf'
-    OFC = 'ofc', 'Ofc'
+    AFC = 'afc', 'AFC'
+    CAF = 'caf', 'CAF'
+    OFC = 'ofc', 'OFC'
 
 class PosicaoEnum(models.TextChoices):
     GOLEIRO = 'goleiro', 'Goleiro'
@@ -93,6 +93,9 @@ class Jogo(models.Model):
     gols_mandante = models.PositiveSmallIntegerField(default=0)
     gols_visitante = models.PositiveSmallIntegerField(default=0)
     status = models.CharField(choices=StatusEnum.choices)
+
+    def __str__(self):
+        return f'{self.selecao_mandante} X {self.selecao_visitante}'
 
 class EventoJogo(models.Model):
     jogo = models.ForeignKey(Jogo, on_delete=models.CASCADE, related_name='eventos')
