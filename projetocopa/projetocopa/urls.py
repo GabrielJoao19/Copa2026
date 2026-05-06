@@ -15,8 +15,32 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers
+from copa26 import views
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+router = routers.DefaultRouter()
+router.register(r'selecoes', views.SelecaoViewSet)
+router.register(r'jogadores', views.JogadorViewSet)
+router.register(r'jogos', views.JogoViewSet)
+router.register(r'tecnicos', views.TecnicoViewSet)
+router.register(r'grupos', views.GrupoViewSet)
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Copa 2026 API",
+        default_version='v1',
+        description="API da Copa 2026",
+    ),
+    public=True,
+    permission_classes=[],
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', include(router.urls)),
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0)),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0))
 ]
